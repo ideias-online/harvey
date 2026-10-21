@@ -443,6 +443,11 @@ class Sender:
         max_daily = self.config.channels.email.max_daily_sends
         sent_today = await self.state.count_outbox_sent_today()
         budget = min(MAX_SENDS_PER_CYCLE, max_daily - sent_today)
+        # A provider with its own shared daily limit (iao_gmail_sa counts the
+        # sender's manual sends too) can only lower the budget, never raise it.
+        remaining = getattr(self.provider, "remaining_today", None)
+        if callable(remaining):
+            budget = min(budget, int(remaining()))
         if budget <= 0:
             logger.info(f"Sender: daily send cap reached ({sent_today}/{max_daily}).")
             return

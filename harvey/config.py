@@ -279,6 +279,9 @@ class BrainConfig(BaseModel):
     provider: str = "claude"
     model: str = ""  # empty = the provider's own default
     reasoning_effort: str = ""  # codex only; empty = model default
+    # Language for everything written for a human (emails, replies, notes),
+    # e.g. "Brazilian Portuguese (pt-BR)". Empty = the prompts' own English.
+    language: str = ""
 
     @field_validator("provider", mode="before")
     @classmethod

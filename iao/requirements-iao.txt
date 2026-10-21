@@ -1,0 +1,2 @@
+# Dependencias extras do provider iao_gmail_sa (email_iao.py assina o JWT da SA)
+cryptography>=42

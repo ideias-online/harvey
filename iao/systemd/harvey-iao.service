@@ -1,0 +1,18 @@
+[Unit]
+Description=Harvey (IA Operacional) - motor de prospeccao da Kate: heartbeat (t_b84784f5)
+Documentation=file://%h/brains/iaoperacional-brain/areas/produto/harvey.md
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/repos-iao/harvey
+Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin:/bin
+Environment=HARVEY_IAO_REMETENTE=kate
+Environment=PYTHONUNBUFFERED=1
+ExecStartPre=%h/repos-iao/harvey/iao/monta-regras.sh
+ExecStart=%h/repos-iao/harvey/.venv/bin/harvey run
+Restart=on-failure
+RestartSec=60
+
+[Install]
+WantedBy=default.target

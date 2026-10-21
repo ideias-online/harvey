@@ -1,0 +1,10 @@
+[Unit]
+Description=Harvey (IA Operacional) - importa bases a cada 30 min
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=30min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

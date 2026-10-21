@@ -1,0 +1,15 @@
+[Unit]
+Description=Harvey (IA Operacional) - dashboard da fila, so em 127.0.0.1:5555 (t_b84784f5)
+Documentation=file://%h/brains/iaoperacional-brain/areas/produto/harvey.md
+
+[Service]
+Type=simple
+WorkingDirectory=%h/repos-iao/harvey
+Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin:/bin
+Environment=HARVEY_IAO_REMETENTE=kate
+ExecStart=%h/repos-iao/harvey/.venv/bin/harvey dashboard --host 127.0.0.1 --port 5555
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=default.target
