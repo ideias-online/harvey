@@ -293,6 +293,13 @@ async def heartbeat(stop_event: asyncio.Event | None = None):
                     f"({config.usage.max_daily_claude_percent}% of quota or "
                     f"{max_calls} calls). Sleeping 1h, then re-checking."
                 )
+                # Sending approved mail needs no model call: the budget caps
+                # thinking, not what the operator already approved (IAO).
+                if sender.is_native:
+                    try:
+                        await sender.run()
+                    except Exception as e:
+                        logger.error(f"Sender (over budget) failed: {e}")
                 if await _interruptible_sleep(3600, stop_event):
                     break
                 continue
