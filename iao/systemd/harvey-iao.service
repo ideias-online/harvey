@@ -9,6 +9,8 @@ WorkingDirectory=%h/repos-iao/harvey
 Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin:/bin
 Environment=HARVEY_IAO_REMETENTE=kate
 Environment=PYTHONUNBUFFERED=1
+# Registra no journal o commit que este start carrega (instalacao editavel: o codigo e o do checkout).
+ExecStartPre=/bin/sh -c 'echo "harvey-iao: commit $$(git -C %h/repos-iao/harvey rev-parse --short HEAD) branch $$(git -C %h/repos-iao/harvey rev-parse --abbrev-ref HEAD)"'
 ExecStartPre=%h/repos-iao/harvey/iao/monta-regras.sh
 # O heartbeat abre o assistente de setup se .env nao existir. Aqui ele fica vazio:
 # nenhuma chave, o envio usa a SA pelo email_iao.py.
