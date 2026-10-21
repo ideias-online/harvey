@@ -20,9 +20,12 @@ Kate usa, onde está a config, como reverter): no cérebro,
 ## Arquivos daqui
 
 - `importa_leads.py` — CSV das bases de prospecção do cérebro → `data/harvey.db`
+- `importa.sh` — importa as bases listadas em `areas/produto/harvey/bases.txt` (timer de 30 min)
 - `rascunhos.py` — uma rodada de profile + Writer, sem envio, imprime a fila
+- `dry_run.py` — gate + MIME real do `email_iao.py --seco` sobre a fila, sem enviar
+- `prova_envio.py` — envio real de teste para operacao@ e leitura da resposta
 - `monta-regras.sh` — monta `skills/iao_rules.md` (regras normativas do cérebro e do agentes-social-media)
-- `systemd/` — `harvey-iao.service` (heartbeat) e `harvey-iao-dashboard.service` (só 127.0.0.1:5555)
+- `systemd/` — `harvey-iao.service` (heartbeat), `harvey-iao-dashboard.service` (só 127.0.0.1:5555), `harvey-iao-importa.{service,timer}`
 - `requirements-iao.txt` — `cryptography` (o `email_iao.py` assina o JWT da SA)
 
 ## Instalar do zero
@@ -32,12 +35,13 @@ Kate usa, onde está a config, como reverter): no cérebro,
     ln -s ~/brains/iaoperacional-brain/areas/produto/harvey/harvey.local.yaml harvey.local.yaml
     for f in product_knowledge competitive_intel; do
       ln -s ~/brains/iaoperacional-brain/areas/produto/harvey/treino-2026-10-20/$f.md skills/$f.md; done
-    ln -sf ~/repos-iao/harvey/iao/systemd/harvey-iao*.service ~/.config/systemd/user/
-    systemctl --user daemon-reload && systemctl --user enable --now harvey-iao harvey-iao-dashboard
+    ln -sf ~/repos-iao/harvey/iao/systemd/harvey-iao* ~/.config/systemd/user/
+    systemctl --user daemon-reload
+    systemctl --user enable --now harvey-iao harvey-iao-dashboard harvey-iao-importa.timer
 
 ## Reverter
 
-    systemctl --user disable --now harvey-iao harvey-iao-dashboard
-    rm ~/.config/systemd/user/harvey-iao*.service && systemctl --user daemon-reload
+    systemctl --user disable --now harvey-iao harvey-iao-dashboard harvey-iao-importa.timer
+    rm ~/.config/systemd/user/harvey-iao* && systemctl --user daemon-reload
 
 Nada mais no host depende do Harvey: o envio manual da Kate segue pelo `email_iao.py`.
