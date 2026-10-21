@@ -21,7 +21,7 @@ from dataclasses import dataclass, field
 
 logger = logging.getLogger("harvey.mail")
 
-NATIVE_PROVIDERS = ("gmail", "smtp", "microsoft")
+NATIVE_PROVIDERS = ("gmail", "smtp", "microsoft", "iao_gmail_sa")
 
 
 @dataclass
@@ -101,4 +101,9 @@ def get_mail_provider(config, env) -> MailProvider | None:
     if provider == "microsoft":
         from harvey.integrations.microsoft import MicrosoftProvider
         return MicrosoftProvider(config, env)
+    if provider == "iao_gmail_sa":
+        # IA Operacional: Gmail API via Service Account + domain-wide delegation,
+        # sent through the team's email_iao.py (no OAuth, no password).
+        from harvey.integrations.iao_gmail_sa import IaoGmailSAProvider
+        return IaoGmailSAProvider(config, env)
     return None

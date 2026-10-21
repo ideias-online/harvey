@@ -261,6 +261,15 @@ class Brain:
         ``agent``/``task`` label the call in the usage_events ledger so the
         dashboard can attribute tokens and cost to specific work.
         """
+        language = (getattr(self.config, "language", "") or "").strip()
+        if language:
+            prompt = (
+                f"{prompt}\n\nOUTPUT LANGUAGE: write every text meant for a person "
+                f"(email subjects and bodies, replies, notes, descriptions) in {language}, "
+                "natural and native, never translated-sounding. Every rule above applies "
+                "to its equivalent in that language. JSON keys and enum values stay "
+                "exactly as specified."
+            )
         if self.provider == "codex":
             return await self._think_codex(
                 prompt, session_id=session_id, timeout=timeout,
@@ -714,8 +723,10 @@ class Brain:
         # and loaded by every agent that needs product context
         skill_map = {
             "scout": ["prospecting_tactics", "lead_qualification", "account_navigation", "signal_playbook", "product_knowledge"],
-            "writer": ["email_frameworks", "signal_playbook", "sales_methodology", "offer_strategy", "product_knowledge", "competitive_intel"],
-            "handler": ["objection_handling", "sales_methodology", "offer_strategy", "product_knowledge", "competitive_intel"],
+            # iao_rules: IA Operacional's normative writing rules, assembled at
+            # deploy (iao/monta-regras.sh); absent = skipped, upstream unchanged.
+            "writer": ["email_frameworks", "signal_playbook", "sales_methodology", "offer_strategy", "product_knowledge", "competitive_intel", "iao_rules"],
+            "handler": ["objection_handling", "sales_methodology", "offer_strategy", "product_knowledge", "competitive_intel", "iao_rules"],
             "sender": ["email_frameworks", "product_knowledge"],
             "linkedin": ["linkedin_outreach", "prospecting_tactics", "product_knowledge"],
         }

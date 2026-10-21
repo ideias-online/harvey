@@ -1,0 +1,7 @@
+[Unit]
+Description=Harvey (IA Operacional) - importa as bases de prospeccao do cerebro (t_b84784f5)
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/repos-iao/harvey
+ExecStart=%h/repos-iao/harvey/iao/importa.sh

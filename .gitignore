@@ -60,3 +60,6 @@ harvey.local.yaml
 # Backups and in-progress writes from `harvey train` hold the same config.
 harvey.local.yaml.*
 harvey.yaml.*
+
+# IA Operacional: skill montado no deploy (iao/monta-regras.sh)
+skills/iao_rules.md

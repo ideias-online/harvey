@@ -26,6 +26,24 @@ BANNED_PHRASES = (
     "as a language model",
 )
 
+# Portuguese (pt-BR) equivalents: spam triggers, AI tells and the IA
+# Operacional prospecting rules (greet the decision-maker by name, never "a
+# equipe"). Checked the same way, lowercase substring.
+BANNED_PHRASES_PT = (
+    "grátis", "gratuito", "garantido", "garantimos", "sem risco", "sem custo",
+    "promoção", "oferta exclusiva", "oferta especial", "clique aqui",
+    "compre agora", "aja agora", "tempo limitado", "última chance", "imperdível",
+    "parabéns", "ganhe dinheiro", "dobre seu", "dobrar seu",
+    "espero que esteja bem", "espero que você esteja bem", "espero que este e-mail",
+    "espero que este email", "venho por meio", "gostaria de apresentar",
+    "revolucion", "solução inovadora", "transformar o seu negócio",
+    "transforme seu negócio", "transformar seu negócio", "alavanc", "potencializ",
+    "como uma ia", "sou uma ia", "sou um modelo de linguagem",
+    "olá, equipe", "oi, equipe", "olá equipe", "prezada equipe", "equipe da ",
+    "olá, tudo bem",
+)
+BANNED_PHRASES = BANNED_PHRASES + BANNED_PHRASES_PT
+
 MAX_SUBJECT_LEN = 90
 MAX_BODY_WORDS = 220        # hard ceiling; sequences aim far lower
 MAX_LINKS = 1
