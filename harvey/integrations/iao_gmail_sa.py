@@ -68,6 +68,9 @@ def strip_signoff(body: str, names: set[str]) -> str:
     return "\n".join(lines).rstrip() or (body or "")
 
 
+IGNORA_STATUS = ("indeterminado", "nao_enviado")  # linhas de envios.csv sem contato confirmado
+
+
 class IaoGmailSAProvider(MailProvider):
     name = "iao_gmail_sa"
 
@@ -185,6 +188,10 @@ class IaoGmailSAProvider(MailProvider):
             return ""
         ours = self._ledger_ids()
         for r in rows:
+            # indeterminado: email_iao.enviar confere em Enviados antes de reenviar (t_056c0ccf);
+            # nao_enviado: conferido que nao saiu. Nenhum dos dois e contato manual.
+            if (r.get("status") or "") in IGNORA_STATUS:
+                continue
             if (r.get("message_id") or "") not in ours:
                 return f"{r.get('data_hora', '')[:16]} por {r.get('remetente', '')}"
         return ""
