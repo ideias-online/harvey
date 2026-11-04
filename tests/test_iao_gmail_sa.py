@@ -142,6 +142,17 @@ def test_cold_email_refused_when_contacted_manually(tmp_path, monkeypatch):
     assert asyncio.run(p.send_email("claudio@x.com", "Re: s", "b", in_reply_to="<r@x>")).ok
 
 
+def test_unconfirmed_rows_are_not_manual_contact(tmp_path, monkeypatch):
+    # t_056c0ccf: indeterminado (email_iao confere Enviados) e nao_enviado nao bloqueiam o Harvey
+    mod = _fake_module(tmp_path, envios_rows=[
+        "2026-11-04T20:19:35-03:00,kate@iaoperacional.com.br,ana@x.com,s,,<local1@iaoperacional.com.br>,indeterminado,",
+        "2026-11-04T20:19:35-03:00,kate@iaoperacional.com.br,bia@x.com,s,,<local2@iaoperacional.com.br>,nao_enviado,",
+    ])
+    p = _provider(tmp_path, monkeypatch, mod)
+    assert asyncio.run(p.send_email("ana@x.com", "s", "b")).ok
+    assert asyncio.run(p.send_email("bia@x.com", "s", "b")).ok
+
+
 def test_signoff_is_stripped_before_signature():
     from harvey.integrations.iao_gmail_sa import strip_signoff
     body = "Alfredo,\n\nComo vocês conferem o repasse?\n\nKate\nIA Operacional\n"

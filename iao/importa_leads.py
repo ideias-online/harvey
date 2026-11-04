@@ -152,6 +152,8 @@ def contatados_fora(envios):
     for r in rows:
         if (r.get("message_id") or "") in ours:
             continue
+        if (r.get("status") or "") in ("indeterminado", "nao_enviado"):  # sem contato confirmado (t_056c0ccf)
+            continue
         for e in re.findall(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+", r.get("para") or ""):
             out.add(e.lower())
     return out
